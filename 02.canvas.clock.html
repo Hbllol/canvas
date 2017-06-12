@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <canvas width="1000" height="500" id="canvas"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    //表盘
+    function time() {
+        ctx.clearRect(0, 0, 1000, 1000);
+        //获取时间
+        var MyTime = new Date();
+        var h = (MyTime.getHours() + MyTime.getMinutes() / 60) / 12 * 360;
+        var m = (MyTime.getMinutes() + MyTime.getSeconds() / 60) / 60 * 360;
+        var s = MyTime.getSeconds();
+
+        ctx.beginPath();
+        ctx.arc(600, 250, 200, 0, 2 * Math.PI);
+        ctx.fillStyle = '#000';
+        ctx.lineWidth = '10';
+        ctx.stroke();
+        ctx.closePath();
+
+        //刻度
+
+        for (var i = 0; i < 12; i++) {
+            ctx.save();
+            //将起始点定位到圆心				
+            ctx.translate(600, 250);
+            //设置刻度的样式
+            ctx.lineWidth = 7;
+            ctx.strokeStyle = "#000";
+            //设置旋转角度
+            ctx.rotate(i * 30 * Math.PI / 180);
+            ctx.beginPath();
+            ctx.moveTo(0, -170);
+            ctx.lineTo(0, -190);
+            ctx.stroke();
+            ctx.restore();
+        };
+        //分刻度
+        for (var j = 0; j < 60; j++) {
+            ctx.save();
+            ctx.translate(600, 250);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "#000";
+            ctx.rotate(j * 6 * Math.PI / 180);
+            ctx.beginPath();
+            ctx.moveTo(0, -180);
+            ctx.lineTo(0, -190);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.restore();
+
+        };
+        //时针
+        ctx.save();
+        ctx.translate(600, 250);
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = "#000";
+        ctx.rotate(h * Math.PI / 180);
+
+        ctx.beginPath();
+        ctx.moveTo(0, 30);
+        ctx.lineTo(0, -100);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+        //分针
+        ctx.save();
+        ctx.translate(600, 250);
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "blue";
+        ctx.rotate(m * Math.PI / 180);
+        ctx.beginPath();
+        ctx.moveTo(0, 30);
+        ctx.lineTo(0, -120);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+        //秒针
+        ctx.save();
+        ctx.translate(600, 250);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "red";
+        ctx.rotate(6 * s * Math.PI / 180);
+        ctx.beginPath();
+        ctx.moveTo(0, 30);
+        ctx.lineTo(0, -150);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+        //针盘
+        ctx.beginPath();
+        ctx.arc(600, 250, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+        ctx.lineWidth = '4';
+        ctx.strokeStyle = '#000';
+        ctx.stroke();
+        ctx.closePath();
+    }
+    time();
+    setInterval(time, 1000);
+</script>
+
+</html>
